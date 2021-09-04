@@ -1,13 +1,14 @@
 import React from 'react';
+import { Grid } from '@material-ui/core';
 import InfoCard from '../info-card';
 
 const InfoCardBlock = ({ content }) => {
     return (
-        <div className="info-card-block">
+        <Grid container spacing={4} direction='column'>
             {content.map((data) => (
                 <InfoCard {...data} />
             ))}
-        </div>
+        </Grid>
     )
 }
 
