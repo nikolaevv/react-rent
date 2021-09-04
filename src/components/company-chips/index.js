@@ -1,13 +1,20 @@
 import React from 'react';
-import { Chip } from '@material-ui/core';
+import { Chip, Grid } from '@material-ui/core';
+import './style.css';
 
 const CompanyChips = ({ company }) => {
     return (
-        <div className="chips-block">
-            <Chip label={company.terminal} />
-            <Chip label={`${company.square} М`} />
-            <Chip label={`${company.stage}-ый этаж`} />
-        </div>
+        <Grid container spacing={2} className='chips-container'>
+            <Grid item>
+                <Chip label={`Терминал ${company.terminal}`} variant="outlined" />
+            </Grid>
+            <Grid item>
+                <Chip label={`${company.square} М`} variant="outlined" />
+            </Grid>
+            <Grid item>
+                <Chip label={`${company.stage}-ый этаж`} variant="outlined" />
+            </Grid>
+        </Grid>
     )
 }
 

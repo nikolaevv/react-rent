@@ -9,6 +9,8 @@ import Spinner from '../../spinner';
 import InfoCardBlock from '../../info-card-block';
 import { useBusiness } from '../../../services/business';
 
+import './styles.css';
+
 const CompanyPage = () => {
     const [ bisiness, getBusiness ] = useBusiness();
     let { id } = useParams();
@@ -21,19 +23,22 @@ const CompanyPage = () => {
         {
             icon: <PhoneIcon />,
             title: 'Связь',
-            text: 'Алё На связи\nДосвязи',
+            text: <span>Алё на связи<br/>До связи</span>,
+            buttonText: 'Тест',
             onClick: () => {}
         },
         {
             icon: <PhoneIcon />,
             title: 'Связь',
-            text: 'Алё На связи\nДосвязи',
+            text:  <span>Алё на связи<br/>До связи</span>,
+            buttonText: 'Тест',
             onClick: () => {}
         },
         {
             icon: <PhoneIcon />,
             title: 'Связь',
-            text: 'Алё На связи\nДосвязи',
+            text: <span>Алё на связи<br/>До связи</span>,
+            buttonText: 'Тест',
             onClick: () => {}
         },
     ];
@@ -41,7 +46,7 @@ const CompanyPage = () => {
     return (
         bisiness ? (
             <Container className="company-container">
-                <Typography variant="h1">{bisiness.title}</Typography>
+                <Typography variant="h3">{bisiness.title}</Typography>
                 <Card className="company-card">
                     <CompanyChips company={bisiness} />
                     <CardContent>
