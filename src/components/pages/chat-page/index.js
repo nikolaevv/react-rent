@@ -6,8 +6,8 @@ import { useBusinessMessages, useBusinessMessage, useBusiness } from '../../../s
 import './style.css';
 
 const Message = ({title, text, role}) => {
-    const color = role === 'AIRPORT' ? 'primary': null;
-    const messageTitle = role === 'AIRPORT' ? title: 'Аэропорт';
+    const color = role === 'AIRPORT' ? 'primary': 'secondary';
+    const messageTitle = role === 'AIRPORT' ? 'Аэропорт' : title;
 
     return (
         <div className="message">
@@ -28,7 +28,7 @@ const ChatPage = () => {
     useEffect(() => {
         getBusiness(id);
         getMessages(id);
-    }, [id]);
+    }, [id, message]);
 
     if (!bisiness || !messages) {
         return <div></div>
@@ -65,7 +65,10 @@ const ChatPage = () => {
                     </Grid>
 
                     <Grid item xs="2">
-                        <Button style={{marginLeft: '1em', minHeight: '4em', minWidth: '7em'}} variant="contained" color="primary" onClick={() => sendMessage(text)}>
+                        <Button style={{marginLeft: '1em', minHeight: '4em', minWidth: '7em'}} variant="contained" color="primary" onClick={() => {
+                            sendMessage(id, text);
+                            setText('');
+                        }}>
                             Отправить
                         </Button>
                     </Grid>

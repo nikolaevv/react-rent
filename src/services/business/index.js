@@ -110,10 +110,7 @@ const useBusinessMessage = () => {
         'Authorization': `Bearer ${cookies.access_token}`,
         'Content-Type': 'application/json'
     };
-
-    headers["Content-Type"] = undefined;
-
-    const sendMessage = (id, text, file) => postResourceMultipart(`/${id}/messages`, {text: text, body: {}, file: file}, headers, setMessage);
+    const sendMessage = (id, text) => postResource(`/${id}/messages`, {text: text}, headers, setMessage);
    
     return [message, sendMessage];
 };
