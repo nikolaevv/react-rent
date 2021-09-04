@@ -24,7 +24,7 @@ module.exports = (env, options) => {
 
         if (isProd) {
             plugins.push(new MiniCssExtractPlugin({
-                    filename: 'main-[hash:8].css'
+                    filename: 'main-[fullhash:8].css'
                 })
             );
         }
@@ -37,7 +37,7 @@ module.exports = (env, options) => {
 
         output: {
             path: isProd ? path.resolve(__dirname, 'dist') : '/',
-            filename: isProd ? 'main-[hash:8].js' : undefined
+            filename: isProd ? 'main-[fullhash:8].js' : undefined
         },
 
         devServer: {
@@ -45,7 +45,7 @@ module.exports = (env, options) => {
         },
 
         entry: isProd ? undefined : [
-            "webpack-dev-server/client?http://localhost:8081/",
+            "webpack-dev-server/client?http://localhost:8080/",
             "webpack/hot/only-dev-server",
             "./src"
         ],
@@ -82,7 +82,7 @@ module.exports = (env, options) => {
                         loader: 'file-loader',
                         options: {
                             outputPath: 'sounds',
-                            name: '[name]-[sha1:hash:7].[ext]'
+                            name: '[name]-[sha1:fullhash:7].[ext]'
                         }
                     }
                 ]
