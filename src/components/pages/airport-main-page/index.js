@@ -1,6 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {useCookies} from 'react-cookie';
+import {useDispatch, useSelector} from 'react-redux';
+import { addBusinesses } from '../../../actions';
 import {Container, Button, Paper, Card, Divider, Typography, InputBase, IconButton, TextField, CardContent, AccordionSummary, Accordion} from '@material-ui/core';
+import {useBusinesses, useBusiness, useBusinessMessages, useBusinessMessage, useBusinessBreakAgreement} from '../../services/business';
 import SearchIcon from '@material-ui/icons/Search';
 
 import './airport-main-page.css';
@@ -20,6 +23,20 @@ const BusinessListItem = ({title, info, onOpen}) => {
 };
 
 const MainPage = ({history}) => {
+    const [businesses, setBusinesses] = useBusinesses();
+
+    let allBusinesses = useSelector((state) => state.businesses);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (!allBusinesses) {
+            let canceled = false;
+            setBusinesses();
+            !canceled & dispatch(addBusinesses(businesses));
+            return () => canceled = true;
+        }
+    }, []);
+
     return (
         <Container>
             <Typography variant="h3">Компании</Typography>
