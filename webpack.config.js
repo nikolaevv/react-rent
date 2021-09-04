@@ -41,7 +41,11 @@ module.exports = (env, options) => {
         },
 
         devServer: {
-            disableHostCheck: true
+            compress: true,
+            public: 'a27a-185-48-37-99.ngrok.io',
+            allowedHosts: [
+                'a27a-185-48-37-99.ngrok.io'
+            ]
         },
 
         entry: isProd ? undefined : [
