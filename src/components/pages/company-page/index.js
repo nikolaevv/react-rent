@@ -8,6 +8,7 @@ import CancelIcon from '@material-ui/icons/Cancel';
 
 import { useParams } from "react-router-dom";
 
+import { _api } from '../../../services/consts';
 import CompanyChips from '../../company-chips';
 import Spinner from '../../spinner';
 import InfoCardBlock from '../../info-card-block';
@@ -23,7 +24,7 @@ const CompanyPage = () => {
         getBusiness(id);
     }, [id]);
 
-    const data = [
+    const data = bisiness ? [
         {
             icon: <DescriptionIcon />,
             title: 'Действующий договор',
@@ -32,12 +33,12 @@ const CompanyPage = () => {
                 <br/> с данной компанией</span>
             ),
             buttonText: 'Скачать',
-            onClick: () => {}
+            onClick: () => window.open(`${_abi}/api/businesses/${id}/agreement`)
         },
         {
             icon: <QueryBuilderIcon />,
             title: 'История платежей',
-            text:  '...',
+            text:  'История платежй по договору за определённый период.',
             buttonText: 'Скачать',
             onClick: () => {}
         },
@@ -45,14 +46,24 @@ const CompanyPage = () => {
             icon: <LockIcon />,
             title: 'Договор аренды защищён смарт-контрактом',
             text: (
-                <span>Действует до: 23.09.2021
-                <br/>Автоплатёж: активирован
-                <br/>Ставка ренты: 4000$<br/>
-                <Typography  variant="h6">
-                    Задолженность
-                </Typography>
-                Сумма неустойки: 300$
-                <br/>Доля неустойки: 30%</span>
+                <span>Действует до: { new Date(bisiness.termination_time).toDateString() }
+                <br/>Автоплатёж: {bisiness.autopayment ? 'активирован' : 'не активирован'}
+                <br/>Ставка ренты: {bisiness.rent_rate}%<br/>
+                {bisiness.debt > 0 && (
+                    <span>
+                        <Typography  variant="h6">
+                            Задолженность
+                        </Typography>
+                        Сумма неустойки: {bisiness.debt}$
+                        <br/>Доля неустойки: {bisiness.debt / bisiness.rent_rate}%
+                    </span>
+                )}
+                {bisiness.debt == 0 && (
+                    <Typography  variant="h6">
+                        Нет задолженности
+                    </Typography>
+                )}
+                </span>
             ),
             onClick: () => {}
         },
@@ -73,13 +84,13 @@ const CompanyPage = () => {
             icon: <PhoneIcon />,
             title: 'Связь',
             text: (
-                <span>Эл. поста: nickname@site.ru
-                <br/>Телефон: +78005553535</span>
+                <span>Эл. поста: {bisiness.email}
+                <br/>Телефон: {bisiness.phone}</span>
             ),
             buttonText: 'Скачать',
             onClick: () => {}
         },
-    ];
+    ] : [];
 
     return (
         bisiness ? (
