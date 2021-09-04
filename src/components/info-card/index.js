@@ -5,7 +5,7 @@ const InfoCard = ({ icon, title, text, onClick }) => {
     return (
         <Grid container className="info-card" xs="12">
             <Grid container item xs="3">
-                <Icon />
+                {icon}
             </Grid>
             <Grid container item xs="9">
                 

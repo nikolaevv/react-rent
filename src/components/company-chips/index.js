@@ -4,9 +4,9 @@ import { Chip } from '@material-ui/core';
 const CompanyChips = ({ company }) => {
     return (
         <div className="chips-block">
-            <Chip component={company.terminal} />
-            <Chip component={`${company.square} М`} />
-            <Chip component={`${company.stage}-ый этаж`} />
+            <Chip label={company.terminal} />
+            <Chip label={`${company.square} М`} />
+            <Chip label={`${company.stage}-ый этаж`} />
         </div>
     )
 }
