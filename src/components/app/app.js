@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {useUserAuth} from '../../services/user';
+
 import {useInitPayment, useWithdrawPayment, useRemindPayment, useWalletAdress} from '../../services/payments';
 import {useBusinesses, useBusiness, useBusinessMessages, useBusinessMessage, useBusinessBreakAgreement} from '../../services/business';
 import {useCookies} from 'react-cookie';
@@ -9,7 +9,6 @@ import './app.css';
 
 const App = ({history}) => {
 	const [cookies, setCookie, removeCookie] = useCookies(['access_token']);
-	const [user, authUser] = useUserAuth();
 	const [businesses, setBusinesses] = useBusinesses();
 	const [business, setBusiness] = useBusiness();
 	const [messages, setMessages] = useBusinessMessages();
