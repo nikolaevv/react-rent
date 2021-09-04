@@ -1,12 +1,8 @@
 import React, {useState} from 'react';
 import { _api } from '../consts';
+import {_headersBase} from '../methods';
 
 const _apiBase = `${_api}/api/businesses`;
-
-const _headersBase = {
-    'Authorization': 'Bearer 12e6759c4c335b2280950928d33774e74e4dd70adab3b352215b3c4df9b898c509872788014585e1e352e9dd4efbde6e4a923db40cc20ef81c6461cf7e7683fb',
-    'Content-Type': 'application/json'
-};
 
 const getResource = async (url, params, successCallback = () => {}) => {
     let path_url = new URL(`${_apiBase}${url}`)
@@ -25,12 +21,12 @@ const getResource = async (url, params, successCallback = () => {}) => {
     return body;
 };
 
-const postResource = async (url, data, headers = _headersBase, successCallback = () => {}) => {
+const putResource = async (url, data, headers = _headersBase(), successCallback = () => {}) => {
     let path_url = new URL(`${_apiBase}${url}`)
 
     const res = await fetch(path_url, {
         headers: headers, 
-        method: 'POST', 
+        method: 'PUT', 
         body: JSON.stringify(data)
     });
 
@@ -44,22 +40,13 @@ const postResource = async (url, data, headers = _headersBase, successCallback =
     return body;
 };
 
-const postResourceMultipart = async (url, data, headers = _headersBase, successCallback = () => {}) => {
+const postResource = async (url, data, headers = _headersBase(), successCallback = () => {}) => {
     let path_url = new URL(`${_apiBase}${url}`)
-
-    const formData  = new FormData();
-
-    for(const name in data) {
-        if (data[name]) {
-            formData.append(name, data[name]);
-        }
-        
-    }
 
     const res = await fetch(path_url, {
         headers: headers, 
         method: 'POST', 
-        body: formData
+        body: JSON.stringify(data)
     });
 
     if (!res.ok) {
@@ -98,7 +85,7 @@ const useBusinessMessages = () => {
 
 const useBusinessMessage = () => {
     const [message, setMessage] = useState(null);
-    const headers = _headersBase;
+    const headers = _headersBase();
     headers["Content-Type"] = undefined;
 
     const sendMessage = (id, text, file) => postResourceMultipart(`/${id}/messages`, {text: text, body: {}, file: file}, headers, setMessage);

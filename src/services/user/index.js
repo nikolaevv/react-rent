@@ -1,18 +1,17 @@
 import React, {useState} from 'react';
 import { _api } from '../consts';
 
+import {_headersBase} from '../methods';
 
 const _apiBase = `${_api}/api/user`;
-const _headersBase = {
-    'Authorization': 'Bearer 7081670255d77a583b259110d5b938731d28aa27fe8865ee16405b14dc1baa6018f6fbc615baa6f7b03be9eec8c5588a6a97973569b373af0ee03580c1b72460',
-    'Content-Type': 'application/json'
-};
 
 const getResource = async (url, params, successCallback = () => {}) => {
     let path_url = new URL(`${_apiBase}${url}`)
-    path_url.search = params;
+    if (params) {
+        path_url.search = params;
+    }
 
-    const res = await fetch(path_url);
+    const res = await fetch(path_url, {headers: _headersBase});
 
     if (!res.ok) {
         throw new Error("Could not fetch");
@@ -23,11 +22,30 @@ const getResource = async (url, params, successCallback = () => {}) => {
     return body;
 };
 
-const postResource = async (url, data, successCallback = () => {}) => {
+const putResource = async (url, data, headers = _headersBase(), successCallback = () => {}) => {
     let path_url = new URL(`${_apiBase}${url}`)
 
     const res = await fetch(path_url, {
-        headers: _headersBase, 
+        headers: headers, 
+        method: 'PUT', 
+        body: JSON.stringify(data)
+    });
+
+    if (!res.ok) {
+        throw new Error("Could not fetch");
+    }
+
+    const body = await res.json();
+    await console.log(body);
+    await successCallback(body);
+    return body;
+};
+
+const postResource = async (url, data, headers = _headersBase(), successCallback = () => {}) => {
+    let path_url = new URL(`${_apiBase}${url}`)
+
+    const res = await fetch(path_url, {
+        headers: headers, 
         method: 'POST', 
         body: JSON.stringify(data)
     });
