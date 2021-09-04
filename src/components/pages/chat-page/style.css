@@ -1,0 +1,8 @@
+.chat-container {
+    min-height: 100%;
+}
+
+.chat-card {
+    display: flex;
+    min-height: 80%;
+}
