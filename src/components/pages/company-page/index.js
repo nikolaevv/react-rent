@@ -54,6 +54,16 @@ const CompanyPage = ({history}) => {
     console.log(user);
     const data = user.role === 'AIRPORT' ? [
         {
+            icon: <PhoneIcon />,
+            title: 'Связь',
+            text: (
+                <span>Эл. почта: {bisiness.email}
+                <br/>Телефон: {bisiness.phone}</span>
+            ),
+            buttonText: 'Перейти в чат',
+            onClick: () => {history.push(`/businesses/${bisiness.id}/chat`)}
+        },
+        {
             icon: <DescriptionIcon />,
             title: 'Действующий договор',
             text: (
@@ -94,18 +104,7 @@ const CompanyPage = ({history}) => {
                 </span>
             ),
             onClick: () => {}
-        },
-        {
-            icon: <PhoneIcon />,
-            title: 'Связь',
-            text: (
-                <span>Эл. почта: {bisiness.email}
-                <br/>Телефон: {bisiness.phone}</span>
-            ),
-            buttonText: 'Перейти в чат',
-            onClick: () => {history.push(`/businesses/${bisiness.id}/chat`)}
-        },
-        
+        },        
         bisiness.debt > 0 ? {
             icon: <CancelIcon />,
             title: 'Расторжения договора',
@@ -122,17 +121,6 @@ const CompanyPage = ({history}) => {
         
     ] : [
         {
-            icon: <DescriptionIcon />,
-            title: 'Действующий договор',
-            text: (
-                <span>Текущий договор ренты, заключённый
-                <br/> с аэропортом</span>
-            ),
-            buttonText: 'Скачать',
-            onClick: () => document.location.href = `${_api}/api/businesses/${id}/agreement`
-        },
-
-        {
             icon: <PhoneIcon />,
             title: 'Связь',
             text: (
@@ -141,6 +129,16 @@ const CompanyPage = ({history}) => {
             ),
             buttonText: 'Перейти в чат',
             onClick: () => {history.push(`/businesses/${bisiness.id}/chat`)}
+        },
+        {
+            icon: <DescriptionIcon />,
+            title: 'Действующий договор',
+            text: (
+                <span>Текущий договор ренты, заключённый
+                <br/> с аэропортом</span>
+            ),
+            buttonText: 'Скачать',
+            onClick: () => document.location.href = `${_api}/api/businesses/${id}/agreement`
         },
 
         !bisiness.autopayment ? {
