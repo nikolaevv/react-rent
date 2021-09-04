@@ -64,7 +64,7 @@ const MainPage = ({history}) => {
                 {
                     allBusinesses.map((business) => {
                         const {id, title, square, debt} = business;
-                        const info = `${square} • ${debt ? 'Задолженность' : 'Оплачено'}`
+                        const info = `${square} м² • ${debt ? 'Задолженность' : 'Оплачено'}`
                         return <BusinessListItem key={id} title={title} info={info} onOpen={() => history.push(`/businesses/${id}`)}/>
                     })
                 }

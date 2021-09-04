@@ -6,23 +6,28 @@ import DescriptionIcon from '@material-ui/icons/Description';
 import QueryBuilderIcon from '@material-ui/icons/QueryBuilder';
 import CancelIcon from '@material-ui/icons/Cancel';
 
+import { withRouter } from 'react-router';
 import { useParams } from "react-router-dom";
 
-import { _api } from '../../../services/consts';
+import {_api} from '../../../services/consts';
 import CompanyChips from '../../company-chips';
 import Spinner from '../../spinner';
 import InfoCardBlock from '../../info-card-block';
-import { useBusiness } from '../../../services/business';
+import {useBusiness} from '../../../services/business';
 
 import './styles.css';
 
-const CompanyPage = () => {
-    const [ bisiness, getBusiness ] = useBusiness();
-    let { id } = useParams();
+const CompanyPage = ({history}) => {
+    const [bisiness, getBusiness] = useBusiness();
+    let {id} = useParams();
 
     useEffect(() => {
         getBusiness(id);
     }, [id]);
+
+    if (!bisiness) {
+        return <div></div>
+    }
 
     const data = bisiness ? [
         {
@@ -33,14 +38,14 @@ const CompanyPage = () => {
                 <br/> с данной компанией</span>
             ),
             buttonText: 'Скачать',
-            onClick: () => window.open(`${_abi}/api/businesses/${id}/agreement`)
+            onClick: () => document.location.href = `${_api}/api/businesses/${id}/agreement`
         },
         {
             icon: <QueryBuilderIcon />,
             title: 'История платежей',
             text:  'История платежй по договору за определённый период.',
             buttonText: 'Скачать',
-            onClick: () => {}
+            onClick: () => document.location.href = `${_api}/api/businesses/${id}/payments`
         },
         {
             icon: <LockIcon />,
@@ -48,7 +53,7 @@ const CompanyPage = () => {
             text: (
                 <span>Действует до: { new Date(bisiness.termination_time).toDateString() }
                 <br/>Автоплатёж: {bisiness.autopayment ? 'активирован' : 'не активирован'}
-                <br/>Ставка ренты: {bisiness.rent_rate}%<br/>
+                <br/>Ставка ренты: {bisiness.rent_rate} ₽<br/>
                 {bisiness.debt > 0 && (
                     <span>
                         <Typography  variant="h6">
@@ -68,6 +73,16 @@ const CompanyPage = () => {
             onClick: () => {}
         },
         {
+            icon: <PhoneIcon />,
+            title: 'Связь',
+            text: (
+                <span>Эл. поста: {bisiness.email}
+                <br/>Телефон: {bisiness.phone}</span>
+            ),
+            //buttonText: 'Скачать',
+            onClick: () => {}
+        },
+        bisiness.autopayment ? {
             icon: <CancelIcon />,
             title: 'Расторжения договора',
             text: (
@@ -75,21 +90,12 @@ const CompanyPage = () => {
                 <br/>краткосрочном расторжении договора
                 <br/>аренды.
                 <br/>Уведомление автоматически отправится
-                <br/>через три дня.</span>
+                <br/>через несколько дней.</span>
             ),
             buttonText: 'Отправить',
             onClick: () => {}
-        },
-        {
-            icon: <PhoneIcon />,
-            title: 'Связь',
-            text: (
-                <span>Эл. поста: {bisiness.email}
-                <br/>Телефон: {bisiness.phone}</span>
-            ),
-            buttonText: 'Скачать',
-            onClick: () => {}
-        },
+        } : null,
+        
     ] : [];
 
     return (
@@ -107,4 +113,4 @@ const CompanyPage = () => {
     )
 }
 
-export default CompanyPage;
+export default withRouter(CompanyPage);
