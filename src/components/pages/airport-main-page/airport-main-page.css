@@ -1,0 +1,21 @@
+.info-block {
+    margin-top: 2em;
+}
+
+.search-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 1em;
+}
+
+.business-list {
+    margin-top: 1.5em;
+}
+
+.business-list-item {
+    cursor: pointer;
+    padding-left: 1em;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+}

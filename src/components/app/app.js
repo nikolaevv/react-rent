@@ -5,6 +5,7 @@ import {useBusinesses, useBusiness, useBusinessMessages, useBusinessMessage, use
 import {useCookies} from 'react-cookie';
 import {withRouter, Route} from 'react-router';
 import AuthPage from '../pages/auth-page';
+import MainPage from '../pages/airport-main-page';
 import './app.css';
 
 const App = ({history}) => {
@@ -58,6 +59,7 @@ const App = ({history}) => {
 
     return (
         <div>
+            <Route path="/" exact component={MainPage}/>
             <Route path="/auth" exact component={AuthPage}/>
         </div>
     );

@@ -16,7 +16,7 @@ const AuthPage = ({history}) => {
 
     useEffect(() => {
         if (cookies.access_token) {
-            //history.push('/')
+            history.push('/')
         }
         else {
             //authUser("starlei165@gmail.com", "deut10", (result) => setCookie("access_token", result.access_token))
@@ -41,7 +41,7 @@ const AuthPage = ({history}) => {
                     
                     <div className="auth-form">
                         <TextField onChange={(e) => setLogin(e.target.value)} id="outlined-basic" label="Логин" variant="outlined"/>
-                        <TextField onChange={(e) => setPassword(e.target.value)} id="outlined-basic" label="Пароль" variant="outlined"/>
+                        <TextField onChange={(e) => setPassword(e.target.value)} type="password" id="outlined-basic" label="Пароль" variant="outlined"/>
                     </div>
 
                     <div className="auth-actions">
