@@ -3,9 +3,11 @@ import {useUserAuth} from '../../services/user';
 import {useInitPayment, useWithdrawPayment, useRemindPayment, useWalletAdress} from '../../services/payments';
 import {useBusinesses, useBusiness, useBusinessMessages, useBusinessMessage, useBusinessBreakAgreement} from '../../services/business';
 import {useCookies} from 'react-cookie';
+import {withRouter, Route} from 'react-router';
+import AuthPage from '../pages/auth-page';
 import './app.css';
 
-const App = () => {
+const App = ({history}) => {
 	const [cookies, setCookie, removeCookie] = useCookies(['access_token']);
 	const [user, authUser] = useUserAuth();
 	const [businesses, setBusinesses] = useBusinesses();
@@ -49,6 +51,7 @@ const App = () => {
 		console.log(business);
 
 		if (!cookies.access_token) {
+            history.push('/auth')
 			//authUser("starlei165@gmail.com", "deut10", (result) => setCookie("access_token", result.access_token));
 		}
 		
@@ -56,9 +59,9 @@ const App = () => {
 
     return (
         <div>
-            
+            <Route path="/auth" exact component={AuthPage}/>
         </div>
     );
 };
 
-export default App;
+export default withRouter(App);

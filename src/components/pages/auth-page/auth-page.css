@@ -1,0 +1,43 @@
+.logo {
+    width: 4em;
+    margin-bottom: 1em;
+}
+
+.auth-container {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.auth-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    padding-left: 3em;
+    padding-right: 3em;
+}
+
+.auth-form {
+    margin-top: 2em;
+    display: flex;
+    flex-direction: column;
+}
+
+.auth-actions {
+    width: auto;
+    margin-top: 1em;
+}
+
+.auth-actions > * {
+    margin-bottom: 1em !important;
+}
+
+.auth-form > * {
+    width: 25ch;
+    margin-bottom: 0.8em !important;
+}
