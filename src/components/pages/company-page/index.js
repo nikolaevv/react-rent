@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import {Container, Button, Card, Typography, TextField, CardContent} from '@material-ui/core';
 import PhoneIcon from '@material-ui/icons/Phone';
 import LockIcon from '@material-ui/icons/Lock';
@@ -8,28 +9,50 @@ import CancelIcon from '@material-ui/icons/Cancel';
 
 import { withRouter } from 'react-router';
 import { useParams } from "react-router-dom";
+import {useUser} from '../../../services/user';
 
 import {_api} from '../../../services/consts';
 import CompanyChips from '../../company-chips';
 import Spinner from '../../spinner';
 import InfoCardBlock from '../../info-card-block';
 import {useBusiness} from '../../../services/business';
+import {useInitPayment} from '../../../services/payments';
+import {setCurrentUser} from '../../../actions';
+
 
 import './styles.css';
 
 const CompanyPage = ({history}) => {
     const [bisiness, getBusiness] = useBusiness();
+    const [user, setUser] = useUser();
+    const [paymentInit, initPayment] = useInitPayment();
+    let currentUser = useSelector((state) => state.businesses);
     let {id} = useParams();
 
-    useEffect(() => {
-        getBusiness(id);
-    }, [id]);
+    const dispatch = useDispatch();
 
-    if (!bisiness) {
+    useEffect(() => {
+        let canceled = false;
+
+        getBusiness(id);
+
+        if(paymentInit) {
+            document.location.href = paymentInit.url;
+        }
+        
+
+        setUser();
+        !canceled & dispatch(setCurrentUser(user));
+        
+
+        return () => canceled = true;
+    }, [id, paymentInit]);
+
+    if (!bisiness || !user) {
         return <div></div>
     }
-
-    const data = bisiness ? [
+    console.log(user);
+    const data = user.role === 'AIRPORT' ? [
         {
             icon: <DescriptionIcon />,
             title: 'Действующий договор',
@@ -76,13 +99,14 @@ const CompanyPage = ({history}) => {
             icon: <PhoneIcon />,
             title: 'Связь',
             text: (
-                <span>Эл. поста: {bisiness.email}
+                <span>Эл. почта: {bisiness.email}
                 <br/>Телефон: {bisiness.phone}</span>
             ),
-            //buttonText: 'Скачать',
-            onClick: () => {}
+            buttonText: 'Перейти в чат',
+            onClick: () => {history.push(`/businesses/${bisiness.id}/chat`)}
         },
-        bisiness.autopayment ? {
+        
+        bisiness.debt > 0 ? {
             icon: <CancelIcon />,
             title: 'Расторжения договора',
             text: (
@@ -96,7 +120,44 @@ const CompanyPage = ({history}) => {
             onClick: () => {}
         } : null,
         
-    ] : [];
+    ] : [
+        {
+            icon: <DescriptionIcon />,
+            title: 'Действующий договор',
+            text: (
+                <span>Текущий договор ренты, заключённый
+                <br/> с аэропортом</span>
+            ),
+            buttonText: 'Скачать',
+            onClick: () => document.location.href = `${_api}/api/businesses/${id}/agreement`
+        },
+
+        {
+            icon: <PhoneIcon />,
+            title: 'Связь',
+            text: (
+                <span>Эл. почта: rent@svo.aero
+                <br/>Телефон: 8(495)578-65-65</span>
+            ),
+            buttonText: 'Перейти в чат',
+            onClick: () => {history.push(`/businesses/${bisiness.id}/chat`)}
+        },
+
+        !bisiness.autopayment ? {
+            icon: <CancelIcon />,
+            title: 'Регулярные платежи',
+            text: (
+                <span>❗Подключите автоматический платёж 
+                <br/>для начала работы</span>
+            ),
+            buttonText: 'Отправить',
+            onClick: () => {
+                initPayment(bisiness.id, 1);
+                
+                
+            }
+        } : null,
+    ];
 
     return (
         bisiness ? (

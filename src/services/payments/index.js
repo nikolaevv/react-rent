@@ -3,7 +3,7 @@ import {_api} from '../consts';
 import {_headersBase} from '../methods';
 import { useCookies } from 'react-cookie';
 
-const _apiBase = `${_api}api/businesses`;
+const _apiBase = `${_api}/api/businesses`;
 
 const getResource = async (url, params, successCallback = () => {}) => {
     let path_url = new URL(`${_apiBase}${url}`)
