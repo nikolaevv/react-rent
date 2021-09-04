@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import { _api } from '../consts';
+import { useCookies } from 'react-cookie';
 
 import {_headersBase} from '../methods';
 
@@ -62,10 +63,18 @@ const postResource = async (url, data, headers = _headersBase(), successCallback
 
 const useUserAuth = () => {
     const [user, setUser] = useState({});
+
+    const [cookies, setCookie] = useCookies(['access-token']);
+
+    const headers = {
+        'Authorization': `Bearer ${cookies.access_token}`,
+        'Content-Type': 'application/json'
+    };
     
-    const authUser = (login, password, successCallback) => postResource('/auth', {login: login, password: password}, 
+    const authUser = (login, password, successCallback) => postResource('/auth', {login: login, password: password}, headers,
         (result) => {
             successCallback(result);
+            setCookie('access-token', result)
             setUser(result)
         }
     );

@@ -1,16 +1,17 @@
 import React, {useState} from 'react';
 import { _api } from '../consts';
 import {_headersBase} from '../methods';
+import { useCookies } from 'react-cookie';
 
 const _apiBase = `${_api}/api/businesses`;
 
-const getResource = async (url, params, successCallback = () => {}) => {
+const getResource = async (url, params, headers, successCallback = () => {}) => {
     let path_url = new URL(`${_apiBase}${url}`)
     if (params) {
         path_url.search = params;
     }
 
-    const res = await fetch(path_url, {headers: _headersBase});
+    const res = await fetch(path_url, {headers: headers});
 
     if (!res.ok) {
         throw new Error("Could not fetch");
@@ -61,31 +62,55 @@ const postResource = async (url, data, headers = _headersBase(), successCallback
 
 const useBusinesses = () => {
     const [businesses, setBusinesses] = useState(null);
+
+    const [cookies] = useCookies(['access-token']);
+    const headers = {
+        'Authorization': `Bearer ${cookies.access_token}`,
+        'Content-Type': 'application/json'
+    };
     
-    const getBusinesses = () => getResource('/', null, setBusinesses);
+    const getBusinesses = () => getResource('/', null, headers, setBusinesses);
    
     return [businesses, getBusinesses];
 };
 
 const useBusiness = () => {
     const [business, setBusiness] = useState(null);
+
+    const [cookies] = useCookies(['access-token']);
+    const headers = {
+        'Authorization': `Bearer ${cookies.access_token}`,
+        'Content-Type': 'application/json'
+    };
     
-    const getBusiness = (id) => getResource(`/${id}`, null, setBusiness);
+    const getBusiness = (id) => getResource(`/${id}`, null, headers, setBusiness);
    
     return [business, getBusiness];
 };
 
 const useBusinessMessages = () => {
     const [messages, setMessages] = useState(null);
+
+    const [cookies] = useCookies(['access-token']);
+    const headers = {
+        'Authorization': `Bearer ${cookies.access_token}`,
+        'Content-Type': 'application/json'
+    };
     
-    const getMessages = (id) => getResource(`/${id}/messages`, null, setMessages);
+    const getMessages = (id) => getResource(`/${id}/messages`, null, headers, setMessages);
    
     return [messages, getMessages];
 };
 
 const useBusinessMessage = () => {
     const [message, setMessage] = useState(null);
-    const headers = _headersBase();
+
+    const [cookies] = useCookies(['access-token']);
+    const headers = {
+        'Authorization': `Bearer ${cookies.access_token}`,
+        'Content-Type': 'application/json'
+    };
+
     headers["Content-Type"] = undefined;
 
     const sendMessage = (id, text, file) => postResourceMultipart(`/${id}/messages`, {text: text, body: {}, file: file}, headers, setMessage);
@@ -95,7 +120,15 @@ const useBusinessMessage = () => {
 
 const useBusinessBreakAgreement = () => {
     const [breakedAgreement, setBreakedAgreement] = useState(null);
-    const breakAgreement = (id) => postResource(`/${id}/agreement/break`, null, setBreakedAgreement);
+
+    const [cookies] = useCookies(['access-token']);
+
+    const headers = {
+        'Authorization': `Bearer ${cookies.access_token}`,
+        'Content-Type': 'application/json'
+    };
+
+    const breakAgreement = (id) => postResource(`/${id}/agreement/break`, null, headers, setBreakedAgreement);
    
     return [breakedAgreement, breakAgreement];
 };
