@@ -49,7 +49,7 @@ const AuthPage = ({history}) => {
                             Вход
                         </Button>
 
-                        <Button variant="outlined" color="primary" fullWidth>
+                        <Button disabled variant="outlined" color="primary" fullWidth>
                             Регистрация
                         </Button>
                     </div>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {Container, Button, Card, Typography, TextField, CardContent} from '@material-ui/core';
 import PhoneIcon from '@material-ui/icons/Phone';
@@ -16,16 +16,18 @@ import CompanyChips from '../../company-chips';
 import Spinner from '../../spinner';
 import InfoCardBlock from '../../info-card-block';
 import {useBusiness} from '../../../services/business';
-import {useInitPayment} from '../../../services/payments';
+import {useInitPayment, useGetWithdrawSumm, useWithdrawPayment} from '../../../services/payments';
 import {setCurrentUser} from '../../../actions';
-
 
 import './styles.css';
 
 const CompanyPage = ({history}) => {
+    const [withDrawSummAll, setWithDrawSummAll] = useState(0.0);
     const [bisiness, getBusiness] = useBusiness();
     const [user, setUser] = useUser();
+    const [withdrawSumm, getWithdrawSumm] = useGetWithdrawSumm();
     const [paymentInit, initPayment] = useInitPayment();
+    const [paymentWithdraw, withdrawPayment] = useWithdrawPayment();
     let currentUser = useSelector((state) => state.businesses);
     let {id} = useParams();
 
@@ -40,15 +42,17 @@ const CompanyPage = ({history}) => {
             document.location.href = paymentInit.url;
         }
         
+        if(!withdrawSumm) {
+            getWithdrawSumm(id);
+        }
 
         setUser();
         !canceled & dispatch(setCurrentUser(user));
         
-
         return () => canceled = true;
     }, [id, paymentInit]);
 
-    if (!bisiness || !user) {
+    if (!bisiness || !user || !withdrawSumm) {
         return <div></div>
     }
     console.log(user);
@@ -130,6 +134,33 @@ const CompanyPage = ({history}) => {
             buttonText: 'Перейти в чат',
             onClick: () => {history.push(`/businesses/${bisiness.id}/chat`)}
         },
+
+        bisiness.autopayment ? {
+            icon: <CancelIcon />,
+            title: 'Разблокировка средств',
+            text: (
+                <div>
+                    <span>Доступно к разблокироке до {withdrawSumm.result} ₽</span>
+                    <br/>
+                    <br/>
+                    <TextField
+                        id="standard-number"
+                        label="Сумма"
+                        type="number"
+                        onChange={(e) => setWithDrawSummAll(e.target.value)}
+                        defaultValue={withdrawSumm.result}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                    />
+                </div>
+            ),
+            buttonText: 'Разблокировать',
+            onClick: () => {
+                withdrawPayment(bisiness.id, withDrawSummAll);
+            }
+        } : null,
+
         {
             icon: <DescriptionIcon />,
             title: 'Действующий договор',

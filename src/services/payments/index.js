@@ -5,13 +5,13 @@ import { useCookies } from 'react-cookie';
 
 const _apiBase = `${_api}/api/businesses`;
 
-const getResource = async (url, params, successCallback = () => {}) => {
+const getResource = async (url, params, headers, successCallback = () => {}) => {
     let path_url = new URL(`${_apiBase}${url}`)
     if (params) {
         path_url.search = params;
     }
 
-    const res = await fetch(path_url, {headers: _headersBase});
+    const res = await fetch(path_url, {headers: headers});
 
     if (!res.ok) {
         throw new Error("Could not fetch");
@@ -88,6 +88,20 @@ const useWithdrawPayment = () => {
     return [paymentWithdraw, withdrawPayment];
 };
 
+const useGetWithdrawSumm = () => {
+    const [withdrawSumm, setWithdrawSumm] = useState(null);
+
+    const [cookies] = useCookies(['access-token']);
+    const headers = {
+        'Authorization': `Bearer ${cookies.access_token}`,
+        'Content-Type': 'application/json'
+    };
+    
+    const getWithdrawSumm = (id) => getResource(`/${id}/payments/withdraw`, null, headers, setWithdrawSumm);
+   
+    return [withdrawSumm, getWithdrawSumm];
+};
+
 const useRemindPayment = () => {
     const [paymentReminder, setPaymentReminder] = useState(null);
 
@@ -116,4 +130,4 @@ const useWalletAdress = () => {
     return [walletAdress, putWalletAdress];
 };
 
-export {useInitPayment, useWithdrawPayment, useRemindPayment, useWalletAdress};
+export {useInitPayment, useWithdrawPayment, useRemindPayment, useWalletAdress, useGetWithdrawSumm};

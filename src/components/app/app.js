@@ -24,6 +24,7 @@ const App = ({history}) => {
             <Header/>
             <Route path="/" exact component={MainPage}/>
             <Route path="/auth" exact component={AuthPage}/>
+            <Route path="/messages/" exact component={ChatPage} />
 			<Route path="/businesses/:id" exact component={CompanyPage} />
             <Route path="/businesses/:id/chat" exact component={ChatPage} />
         </div>

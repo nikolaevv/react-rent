@@ -5,6 +5,7 @@ import {addBusinesses} from '../../../actions';
 import {Container, Button, Paper, Card, Divider, Typography, InputBase, IconButton, TextField, CardContent, AccordionSummary, Accordion} from '@material-ui/core';
 import {useBusinesses, useBusiness, useBusinessMessages, useBusinessMessage, useBusinessBreakAgreement} from '../../../services/business';
 import SearchIcon from '@material-ui/icons/Search';
+import {useUser} from '../../../services/user';
 import Spinner from '../../spinner';
 
 import './airport-main-page.css';
@@ -25,6 +26,7 @@ const BusinessListItem = ({title, info, onOpen}) => {
 
 const MainPage = ({history}) => {
     const [businesses, setBusinesses] = useBusinesses();
+    const [user, setUser] = useUser();
 
     let allBusinesses = useSelector((state) => state.businesses);
     
@@ -37,11 +39,20 @@ const MainPage = ({history}) => {
             console.log(businesses)
             !canceled & dispatch(addBusinesses(businesses));
         }
+        if (!user) {
+            setUser()
+        }
         return () => canceled = true;
-    }, [businesses]);
+    }, [businesses, user]);
 
-    if (!allBusinesses) {
+    console.log(user);
+
+    if (!allBusinesses || !user) {
         return <Spinner/>
+    }
+
+    if (user.role === 'BUSINESS') {
+        history.push(`/businesses/${user.business_id}`);
     }
 
     return (

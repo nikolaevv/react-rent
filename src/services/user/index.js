@@ -83,7 +83,7 @@ const useUserAuth = () => {
 };
 
 const useUser = () => {
-    const [user, setUser] = useState({});
+    const [user, setUser] = useState(null);
 
     const [cookies, setCookie] = useCookies(['access-token']);
     console.log(cookies.access_token)

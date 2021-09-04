@@ -50,11 +50,11 @@ const Header = () => {
                                         <Button color="inherit">API</Button>
                                     </a>
                                     
-                                    <Link to="/documents">
-                                        <Button color="inherit">Документы</Button>
+                                    <Link to="#">
+                                        <Button disabled color="inherit">Документы</Button>
                                     </Link>
                                     
-                                    <Link to="/settings">
+                                    <Link to="#">
                                     <IconButton
                                         aria-label="account of current user"
                                         aria-controls="menu-appbar"
