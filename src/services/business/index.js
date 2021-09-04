@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
+import { _api } from '../consts';
 
-const _apiBase = 'http://127.0.0.1:8000/api/businesses';
+const _apiBase = `${_api}/api/businesses`;
 
 const _headersBase = {
     'Authorization': 'Bearer 12e6759c4c335b2280950928d33774e74e4dd70adab3b352215b3c4df9b898c509872788014585e1e352e9dd4efbde6e4a923db40cc20ef81c6461cf7e7683fb',
