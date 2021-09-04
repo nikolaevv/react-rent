@@ -6,13 +6,13 @@ import {_headersBase} from '../methods';
 
 const _apiBase = `${_api}/api/user`;
 
-const getResource = async (url, params, successCallback = () => {}) => {
+const getResource = async (url, params, headers, successCallback = () => {}) => {
     let path_url = new URL(`${_apiBase}${url}`)
     if (params) {
         path_url.search = params;
     }
 
-    const res = await fetch(path_url, {headers: _headersBase});
+    const res = await fetch(path_url, {headers: headers});
 
     if (!res.ok) {
         throw new Error("Could not fetch");
@@ -74,7 +74,7 @@ const useUserAuth = () => {
     const authUser = (login, password, successCallback) => postResource('/auth', {login: login, password: password}, headers,
         (result) => {
             successCallback(result);
-            setCookie('access-token', result)
+            //setCookie('access-token', result)
             setUser(result)
         }
     );
@@ -82,4 +82,19 @@ const useUserAuth = () => {
     return [user, authUser];
 };
 
-export {useUserAuth};
+const useUser = () => {
+    const [user, setUser] = useState({});
+
+    const [cookies, setCookie] = useCookies(['access-token']);
+    console.log(cookies.access_token)
+    const headers = {
+        'Authorization': `Bearer ${cookies.access_token}`,
+        'Content-Type': 'application/json'
+    };
+    
+    const getUser = () => getResource('/', null, headers, setUser);
+   
+    return [user, getUser];
+};
+
+export {useUserAuth, useUser};

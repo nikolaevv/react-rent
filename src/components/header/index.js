@@ -1,7 +1,12 @@
 import React, {useEffect} from 'react';
 
 import Logo from '../../files/images/logo.png';
+import {useUser} from '../../services/user';
+
+import {useDispatch, useSelector} from 'react-redux';
 import useStyles from './styles';
+import {setCurrentUser} from '../../actions';
+
 import {Link} from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -10,7 +15,20 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import './header.css';
 
 const Header = () => {
+    const [user, setUser] = useUser();
+
     const classes = useStyles();
+    let currentUser = useSelector((state) => state.businesses);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        let canceled = false;
+
+        setUser();
+        !canceled & dispatch(setCurrentUser(user));
+
+        return () => canceled = true;
+    }, []);
 
     return (
         <div className={classes.root}>
@@ -22,7 +40,7 @@ const Header = () => {
                         </Link>
 
                         <div>
-                            { true && (
+                            { user && user.role === 'AIRPORT' && (
                                 <div>
                                     <Link to="/">
                                         <Button color="inherit">Компании</Button>
@@ -47,7 +65,20 @@ const Header = () => {
                                     </IconButton>
                                     </Link>
                                 </div>
-                            )
+                                )
+                            }
+
+                            { user && user.role === 'BUSINESS' && (
+                                <div>
+                                    <Link to="/">
+                                        <Button color="inherit">Главная</Button>
+                                    </Link>
+
+                                    <Link to="/messages">
+                                        <Button color="inherit">Чат</Button>
+                                    </Link>
+                                </div>
+                                )
                             }
                         </div>
                     </Toolbar>

@@ -12,6 +12,13 @@ const setCurrentBusiness = (currentBusiness) => {
     }
 };
 
+const setCurrentUser = (user) => {
+    return {
+        type: 'SET_CURRENT_USER',
+        payload: user
+    }
+};
+
 const addMessages = (messages) => {
     return {
         type: 'ADD_MESSAGES',
@@ -22,5 +29,6 @@ const addMessages = (messages) => {
 export {
     addBusinesses,
     setCurrentBusiness,
-    addMessages
+    addMessages,
+    setCurrentUser
 };

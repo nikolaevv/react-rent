@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useCookies} from 'react-cookie';
 import {useDispatch, useSelector} from 'react-redux';
-import { addBusinesses } from '../../../actions';
+import {addBusinesses} from '../../../actions';
 import {Container, Button, Paper, Card, Divider, Typography, InputBase, IconButton, TextField, CardContent, AccordionSummary, Accordion} from '@material-ui/core';
 import {useBusinesses, useBusiness, useBusinessMessages, useBusinessMessage, useBusinessBreakAgreement} from '../../../services/business';
 import SearchIcon from '@material-ui/icons/Search';
@@ -27,16 +27,17 @@ const MainPage = ({history}) => {
     const [businesses, setBusinesses] = useBusinesses();
 
     let allBusinesses = useSelector((state) => state.businesses);
+    
     const dispatch = useDispatch();
 
     useEffect(() => {
+        let canceled = false;
         if (!allBusinesses || allBusinesses.length === 0) {
-            let canceled = false;
             setBusinesses();
             console.log(businesses)
             !canceled & dispatch(addBusinesses(businesses));
-            return () => canceled = true;
         }
+        return () => canceled = true;
     }, [businesses]);
 
     if (!allBusinesses) {
@@ -48,7 +49,7 @@ const MainPage = ({history}) => {
             <Typography variant="h3">Компании</Typography>
 
             <Paper className="info-block">
-                <Paper fullWidth component="form" className="search-section">
+                <Paper component="form" className="search-section">
                     <InputBase className="search-bar" placeholder="Поиск"/>
 
                     <div>
@@ -62,8 +63,9 @@ const MainPage = ({history}) => {
             <div className="business-list">
                 {
                     allBusinesses.map((business) => {
-                        const {id, title} = business
-                        return <BusinessListItem key={id} title={title} info="Фастфуд" onOpen={() => history.push(`/businesses/${id}`)}/>
+                        const {id, title, square, debt} = business;
+                        const info = `${square} • ${debt ? 'Задолженность' : 'Оплачено'}`
+                        return <BusinessListItem key={id} title={title} info={info} onOpen={() => history.push(`/businesses/${id}`)}/>
                     })
                 }
             </div>

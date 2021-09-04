@@ -1,6 +1,7 @@
 const initialState = {
     businesses: [],
     currentBusiness: null,
+    currentUser: null,
     messages: []
 }
 
@@ -22,6 +23,12 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 currentBusiness: action.payload
+            }
+
+        case 'SET_CURRENT_USER':
+            return {
+                ...state,
+                currentUser: action.payload
             }
 
         default:
