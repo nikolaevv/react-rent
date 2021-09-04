@@ -15,9 +15,11 @@ const InfoCard = ({ icon, title, text, buttonText, onClick }) => {
                     <Typography variant="body1" gutterBottom className="info-card-cell">{text}</Typography>
                 </Grid>
                 <Grid item>
+                    { buttonText &&
                     <Button variant="contained" color="primary" className="info-card-cell" onClick={onClick}>
                         {buttonText}
                     </Button>
+                    }
                 </Grid>
             </Grid>
         </Grid>
