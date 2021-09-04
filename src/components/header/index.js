@@ -46,9 +46,9 @@ const Header = () => {
                                         <Button color="inherit">Компании</Button>
                                     </Link>
 
-                                    <Link to="/messages">
-                                        <Button color="inherit">Сообщения</Button>
-                                    </Link>
+                                    <a href="http://127.0.0.1:8000/docs">
+                                        <Button color="inherit">API</Button>
+                                    </a>
                                     
                                     <Link to="/documents">
                                         <Button color="inherit">Документы</Button>
@@ -74,7 +74,7 @@ const Header = () => {
                                         <Button color="inherit">Главная</Button>
                                     </Link>
 
-                                    <Link to="/messages">
+                                    <Link to={`/businesses/${user.business_id}/chat`}>
                                         <Button color="inherit">Чат</Button>
                                     </Link>
                                 </div>
