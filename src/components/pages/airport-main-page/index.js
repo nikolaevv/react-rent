@@ -3,8 +3,9 @@ import {useCookies} from 'react-cookie';
 import {useDispatch, useSelector} from 'react-redux';
 import { addBusinesses } from '../../../actions';
 import {Container, Button, Paper, Card, Divider, Typography, InputBase, IconButton, TextField, CardContent, AccordionSummary, Accordion} from '@material-ui/core';
-import {useBusinesses, useBusiness, useBusinessMessages, useBusinessMessage, useBusinessBreakAgreement} from '../../services/business';
+import {useBusinesses, useBusiness, useBusinessMessages, useBusinessMessage, useBusinessBreakAgreement} from '../../../services/business';
 import SearchIcon from '@material-ui/icons/Search';
+import Spinner from '../../spinner';
 
 import './airport-main-page.css';
 import { withRouter } from 'react-router';
@@ -29,16 +30,21 @@ const MainPage = ({history}) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (!allBusinesses) {
+        if (!allBusinesses || allBusinesses.length === 0) {
             let canceled = false;
             setBusinesses();
+            console.log(businesses)
             !canceled & dispatch(addBusinesses(businesses));
             return () => canceled = true;
         }
-    }, []);
+    }, [businesses]);
+
+    if (!allBusinesses) {
+        return <Spinner/>
+    }
 
     return (
-        <Container>
+        <Container className="main-page-container">
             <Typography variant="h3">Компании</Typography>
 
             <Paper className="info-block">
@@ -54,7 +60,12 @@ const MainPage = ({history}) => {
             </Paper>
 
             <div className="business-list">
-                <BusinessListItem title="Макдоналдс" info="Фастфуд" onOpen={() => history.push('/businesses/1')}/>
+                {
+                    allBusinesses.map((business) => {
+                        const {id, title} = business
+                        return <BusinessListItem key={id} title={title} info="Фастфуд" onOpen={() => history.push(`/businesses/${id}`)}/>
+                    })
+                }
             </div>
         </Container>
     );

@@ -1,0 +1,11 @@
+.MuiToolbar-gutters {
+    padding-left: 0 !important;
+}
+
+a > * {
+    color: #FFF !important;
+}
+
+#logo {
+    margin: 0
+}

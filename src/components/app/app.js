@@ -6,9 +6,11 @@ import {useCookies} from 'react-cookie';
 import {withRouter, Route} from 'react-router';
 import AuthPage from '../pages/auth-page';
 import MainPage from '../pages/airport-main-page';
+import Header from '../header';
 import './app.css';
 
 const App = ({history}) => {
+    /*
 	const [cookies, setCookie, removeCookie] = useCookies(['access_token']);
 	const [businesses, setBusinesses] = useBusinesses();
 	const [business, setBusiness] = useBusiness();
@@ -21,6 +23,7 @@ const App = ({history}) => {
 	const [walletAdress, putWalletAdress] = useWalletAdress();
 	
 	useEffect(() => {
+        
 		if (!businesses) {
 			setBusinesses();
 		}
@@ -54,11 +57,14 @@ const App = ({history}) => {
             history.push('/auth')
 			//authUser("starlei165@gmail.com", "deut10", (result) => setCookie("access_token", result.access_token));
 		}
+        
 		
-	}, [cookies, businesses, business, messages]);
+	}, []);
+    */
 
     return (
         <div>
+            <Header/>
             <Route path="/" exact component={MainPage}/>
             <Route path="/auth" exact component={AuthPage}/>
         </div>
