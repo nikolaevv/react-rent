@@ -13,19 +13,19 @@ import App from './components/app';
 const MainApp = () => {
     return (
         <Provider store={store}>
-            <CookiesProvider>
-                <ErrorBoundry>
-                    <ThemeProvider theme={theme}>
-                        <Router>
+            <Router>
+                <CookiesProvider>
+                    <ErrorBoundry>
+                        <ThemeProvider theme={theme}>
                             <ScrollToTop>
                                 <Switch>
                                     <App/>
                                 </Switch>
                             </ScrollToTop>
-                        </Router>
-                    </ThemeProvider>
-                </ErrorBoundry>
-            </CookiesProvider>
+                        </ThemeProvider>
+                    </ErrorBoundry>
+                </CookiesProvider>
+            </Router>
         </Provider>   
     );
 };

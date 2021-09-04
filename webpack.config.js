@@ -41,11 +41,11 @@ module.exports = (env, options) => {
         },
 
         devServer: {
-            disableHostCheck: false
+            disableHostCheck: true
         },
 
         entry: isProd ? undefined : [
-            "webpack-dev-server/client?http://localhost:8080/",
+            "webpack-dev-server/client?http://localhost:8081/",
             "webpack/hot/only-dev-server",
             "./src"
         ],
